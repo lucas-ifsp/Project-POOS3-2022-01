@@ -3,11 +3,11 @@ package br.edu.ifsp.poos3.practival01;
 import java.time.LocalDateTime;
 
 public class Post {
-    private String quote;
-    private LocalDateTime timestap;
+    private final String quote;
+    private final LocalDateTime timestap;
+    private final UserAccount user;
     private int claps;
     private int boos;
-    private UserAccount user;
 
     public Post(UserAccount user, String quote) {
         this.user = user;

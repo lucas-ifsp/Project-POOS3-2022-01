@@ -59,5 +59,23 @@ public class Principal {
         System.out.println("Isa's Timeline: ");
         System.out.println(isa.getTimelineAsString());
 
+        System.out.println("Marias's posts  ");
+        System.out.println(maria.getMyPostAsString());
+
+        System.out.println("Marias's posts after removing index 0: ");
+        maria.deletePost(0);
+        System.out.println(maria.getMyPostAsString());
+
+        System.out.println("Marias's posts after after removing index 4: ");
+        maria.deletePost(4);
+        System.out.println(maria.getMyPostAsString());
+
+        System.out.println("Marias's posts after removing index 7: ");
+        maria.deletePost(6);
+        System.out.println(maria.getMyPostAsString());
+
+        maria.booPost(5);
+        System.out.println(maria.getMyPostAsString());
+
     }
 }

@@ -6,15 +6,15 @@ public class UserAccount {
     public static final int MAX_POSTS_TIMELINE = 10;
 
     private String name;
-    private String email;
+    private final String email;
 
-    private UserAccount[] followers;
+    private final UserAccount[] followers;
     private int numberOfFollowers;
 
-    private Post[] posts;
+    private final Post[] posts;
     private int numberOfPosts;
 
-    private Post[] timeline;
+    private final Post[] timeline;
     private int numberOfPostInTimeline;
 
     public UserAccount(String name, String email) {
@@ -29,9 +29,7 @@ public class UserAccount {
         final Post post = new Post(this, quote);
         posts[numberOfPosts++] = post;
         for (UserAccount follower : followers) {
-            if (follower != null) {
-                follower.updateTimeline(post);
-            }
+            follower.updateTimeline(post);
         }
     }
 
@@ -40,15 +38,22 @@ public class UserAccount {
         numberOfPostInTimeline ++;
     }
 
+    public void deletePost(int postIndex){
+        if(postIndex < 0 || postIndex >= numberOfPosts) return;
+        for (int i = postIndex; i < numberOfPosts - 1; i++) {
+            posts[i] = posts[i+1];
+        }
+        posts[numberOfPosts - 1] = null;
+        numberOfPosts--;
+    }
+
     public void clapPost(int postIndex){
-        if(postIndex < 0 || postIndex >= MAX_POSTS) return;
-        if(posts[postIndex] == null) return;
+        if(postIndex < 0 || postIndex >= numberOfPosts) return;
         posts[postIndex].clap();
     }
 
     public void booPost(int postIndex){
-        if(postIndex < 0 || postIndex >= MAX_POSTS) return;
-        if(posts[postIndex] == null) return;
+        if(postIndex < 0 || postIndex >= numberOfPosts) return;
         posts[postIndex].boo();
     }
 
@@ -62,19 +67,19 @@ public class UserAccount {
         if (follower == null) return;
         for (int i = 0; i < numberOfFollowers; i++) {
             if(follower.equals(followers[i])){
-                followers[i] = null;
+                for(int j = i; j < numberOfFollowers - 1; j++){
+                    followers[j] = followers[j+1];
+                }
+                followers[numberOfFollowers - 1] = null;
+                numberOfFollowers --;
             }
         }
     }
 
     public String getMyPostAsString(){
         String output = "";
-        for (int i = 0; i < numberOfPosts; i++) {
-            final Post post = posts[i];
-            if (post != null) {
-                output += post.getPostAsString() + "\n";
-            }
-        }
+        for (int i = 0; i < numberOfPosts; i++)
+            output += posts[i].getPostAsString() + "\n";
         return output;
     }
 
@@ -91,12 +96,8 @@ public class UserAccount {
 
     public String getFollowersAsString(){
         String output = "";
-        for (int i = 0; i < numberOfFollowers; i++) {
-            final UserAccount follower = followers[i];
-            if (follower != null) {
-                output += follower.getName() + "\n";
-            }
-        }
+        for (int i = 0; i < numberOfFollowers; i++)
+           output += followers[i].getName() + "\n";
         return output;
     }
 
