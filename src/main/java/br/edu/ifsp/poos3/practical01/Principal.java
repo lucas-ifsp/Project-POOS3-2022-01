@@ -1,4 +1,4 @@
-package br.edu.ifsp.poos3.practival01;
+package br.edu.ifsp.poos3.practical01;
 
 public class Principal {
     public static void main(String[] args) {
