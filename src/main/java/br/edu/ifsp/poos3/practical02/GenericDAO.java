@@ -1,14 +1,32 @@
 package br.edu.ifsp.poos3.practical02;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 
-public interface GenericDAO <T, K>{
+public abstract class GenericDAO <K, T extends EntidadePersistente<K>>{
 
-    void salvar(T tipo);
-    void atualizar(T tipo);
-    void deletar(K key);
-    T buscar(K key);
-    List<T> buscarTodos();
+    protected abstract Map<K,T> db();
+
+    public void salvar(T entidade){
+        Objects.requireNonNull(entidade, "Entidade não pode ser nula");
+        db().put(entidade.primaryKey(), entidade);
+    }
+
+    public void atualizar(T entidade){
+        Objects.requireNonNull(entidade, "Entidade não pode ser nula");
+        db().replace(entidade.primaryKey(), entidade);
+    }
+
+    public void deletar(K key){
+        db().remove(key);
+    }
+
+    public T buscar(K key){
+        return db().get(key);
+    }
+
+    public Collection<T> buscarTodos(){
+        return db().values();
+    }
 }

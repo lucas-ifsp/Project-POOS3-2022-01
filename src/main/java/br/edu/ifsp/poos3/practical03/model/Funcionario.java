@@ -1,21 +1,19 @@
-package br.edu.ifsp.poos3.practical2Extra;
+package br.edu.ifsp.poos3.practical03.model;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 
-public abstract class Funcionario implements EntidadePersistente<String>{
+public abstract class Funcionario{
 
-    private static final Map<String,Funcionario> BD = new LinkedHashMap<>();
+    public enum Sexo{MASCULINO, FEMININO, NAO_BINARIO, OUTRO}
 
     private final String cpf;
     private String nome;
     private int idade;
-    private boolean sexo;
+    private Sexo sexo;
     private double valorVendido;
     private Consultor responsavel;
 
-    public Funcionario(String cpf, String nome, int idade, boolean sexo, double valorVendido, Consultor responsavel) {
+    public Funcionario(String cpf, String nome, int idade, Sexo sexo, double valorVendido, Consultor responsavel) {
         this.cpf = cpf;
         this.nome = nome;
         this.idade = idade;
@@ -37,13 +35,12 @@ public abstract class Funcionario implements EntidadePersistente<String>{
             responsavel.addSubordinado(this);
     }
 
-    @Override
-    public String primaryKey() {
+    public String getCpf() {
         return cpf;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getCpfResponsavel() {
+        return responsavel != null  ? responsavel.getCpf() : "--";
     }
 
     public String getNome() {
@@ -62,11 +59,11 @@ public abstract class Funcionario implements EntidadePersistente<String>{
         this.idade = idade;
     }
 
-    public boolean isSexo() {
+    public Sexo getSexo() {
         return sexo;
     }
 
-    public void setSexo(boolean sexo) {
+    public void setSexo(Sexo sexo) {
         this.sexo = sexo;
     }
 
@@ -98,8 +95,7 @@ public abstract class Funcionario implements EntidadePersistente<String>{
                 " | idade = " + idade +
                 " | sexo = " + sexo +
                 " | valor vendido = " + valorVendido +
-                " | responsável = " + (responsavel!= null ? responsavel.getNome() : "NA") +
-                " | comissão = " + calculaComissao() +
-                "\n";
+                " | nome responsável = " + (responsavel != null ? responsavel.getNome() : "NA") +
+                " | comissão = " + calculaComissao();
     }
 }

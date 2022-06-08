@@ -23,7 +23,7 @@ public class Principal {
     }
 
     public void gerenciar() {
-        int opcao = -SAUDE;
+        int opcao = -1;
         while (opcao != 0) {
             opcao = menu();
             switch (opcao) {

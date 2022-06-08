@@ -1,6 +1,6 @@
 package br.edu.ifsp.poos3.practical02;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Scanner;
 
 public class Principal {
@@ -56,8 +56,8 @@ public class Principal {
         FuncionarioDAO dao = new FuncionarioDAO();
         Funcionario responsavel = dao.buscar(cpfResponsavel);
 
-        if(responsavel instanceof Revendedor){
-            responsavel = new Consultor((Revendedor) responsavel);
+        if(responsavel instanceof Revendedor revendedor){ // instanceof pattern matching - Java 16+
+            responsavel = new Consultor(revendedor);
         }
 
         final Revendedor revendedor = new Revendedor(cpf, nome, idade, sexo, valorVendido, (Consultor) responsavel);
@@ -73,7 +73,10 @@ public class Principal {
         FuncionarioDAO dao = new FuncionarioDAO();
         final Funcionario emEdicao = dao.buscar(cpf);
 
-        if(emEdicao == null) return;
+        if(emEdicao == null) {
+            System.out.println("Funcionário não encontrado.");
+            return;
+        }
 
         System.out.print("Nome: ");
         emEdicao.setNome(scanner.nextLine());
@@ -113,8 +116,8 @@ public class Principal {
             System.out.println("Funcionário não encontrado");
             return;
         }
-        if(funcionario instanceof Consultor){
-            ((Consultor) funcionario).promoveSubordinados();
+        if(funcionario instanceof Consultor consultor){ // instanceof pattern matching - Java 16+
+            consultor.promoveSubordinados();
         }
         final Consultor responsavel = funcionario.getResponsavel();
         if(responsavel != null) {
@@ -134,7 +137,7 @@ public class Principal {
 
     public void listarFuncionarios(){
         FuncionarioDAO dao = new FuncionarioDAO();
-        final List<Funcionario> funcionarios = dao.buscarTodos();
+        final Collection<Funcionario> funcionarios = dao.buscarTodos();
         for (Funcionario funcionario : funcionarios) {
             System.out.println(funcionario);
         }

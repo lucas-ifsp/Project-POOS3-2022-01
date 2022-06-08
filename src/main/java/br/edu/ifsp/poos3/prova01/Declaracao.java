@@ -7,7 +7,7 @@ public abstract class Declaracao{// implements Entidade<Integer> {
     private final int id;
     private double ganhoTributavel;
     private double valorPago;
-    protected final double ganhoIsento = 22_847.88;
+    protected final double GANHO_ISENTO = 22_847.88;
 
     public Declaracao(int id, double ganhoTributavel, double valorPago) {
         this.id = id;

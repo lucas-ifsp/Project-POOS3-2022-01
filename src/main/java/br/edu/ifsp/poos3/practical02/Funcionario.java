@@ -1,8 +1,12 @@
 package br.edu.ifsp.poos3.practical02;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
-public abstract class Funcionario{
+public abstract class Funcionario implements EntidadePersistente<String>{
+
+    private static final Map<String,Funcionario> BD = new LinkedHashMap<>();
 
     private final String cpf;
     private String nome;
@@ -31,6 +35,11 @@ public abstract class Funcionario{
         this.responsavel = responsavel;
         if(this.responsavel != null)
             responsavel.addSubordinado(this);
+    }
+
+    @Override
+    public String primaryKey() {
+        return cpf;
     }
 
     public String getCpf() {

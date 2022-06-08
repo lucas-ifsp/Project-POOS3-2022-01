@@ -1,20 +1,25 @@
-package br.edu.ifsp.poos3.practical2Extra;
+package br.edu.ifsp.poos3.practical03.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Consultor extends Funcionario {
 
     private final List<Funcionario> subordinados;
 
-    public Consultor(String cpf, String nome, int idade, boolean sexo, double valorVendido, Consultor responsavel) {
-        super(cpf, nome, idade, sexo, valorVendido, responsavel);
-        subordinados = new ArrayList<>();
+    public Consultor(String cpf){
+        this(cpf, null, 0, null, 0.0, null);
     }
 
     public Consultor(Revendedor revendedor){
         this(revendedor.getCpf(), revendedor.getNome(), revendedor.getIdade(),
-                revendedor.isSexo(), revendedor.getValorVendido(), revendedor.getResponsavel());
+                revendedor.getSexo(), revendedor.getValorVendido(), revendedor.getResponsavel());
+    }
+
+    public Consultor(String cpf, String nome, int idade, Sexo sexo, double valorVendido, Consultor responsavel) {
+        super(cpf, nome, idade, sexo, valorVendido, responsavel);
+        subordinados = new ArrayList<>();
     }
 
     @Override
@@ -25,7 +30,7 @@ public class Consultor extends Funcionario {
     }
 
     public void addSubordinado(Funcionario subordinado){
-        subordinados.remove(subordinado); //remove a instância anterior do subordinado, se houver.
+        subordinados.remove(subordinado);
         subordinados.add(subordinado);
     }
 
@@ -35,6 +40,10 @@ public class Consultor extends Funcionario {
 
     public void promoveSubordinados(){
         subordinados.forEach(s -> s.setResponsavel(this.getResponsavel()));
+    }
+
+    public List<Funcionario> getSubordinados() {
+        return List.copyOf(subordinados);
     }
 
     public int numeroDeSubordinados(){

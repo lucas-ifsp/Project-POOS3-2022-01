@@ -21,7 +21,7 @@ public class DeclaracaoDAO{// extends GenericDAO<Integer, Declaracao> {
     }
 
     public Optional<Declaracao> buscar(Integer id){
-        return Optional.of(db.get(id));
+        return Optional.ofNullable(db.get(id));
     }
 
     public List<Declaracao> buscarTodos(){

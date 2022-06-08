@@ -1,6 +1,6 @@
 package br.edu.ifsp.poos3.practical02;
 
-public class Revendedor extends Funcionario{
+public class Revendedor extends Funcionario {
 
     public Revendedor(String cpf, String nome, int idade, boolean sexo, double valorVendido, Consultor responsavel) {
         super(cpf, nome, idade, sexo, valorVendido, responsavel);

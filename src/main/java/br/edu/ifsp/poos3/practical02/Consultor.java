@@ -3,7 +3,7 @@ package br.edu.ifsp.poos3.practical02;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Consultor extends Funcionario{
+public class Consultor extends Funcionario {
 
     private final List<Funcionario> subordinados;
 
@@ -19,11 +19,9 @@ public class Consultor extends Funcionario{
 
     @Override
     public double calculaComissao() {
-        double comissao = getValorVendido() * 0.15;
-        for (Funcionario subordinado : subordinados) {
-            comissao += subordinado.calculaComissao() * 0.3;
-        }
-        return comissao;
+        return subordinados.stream()
+                .map(s -> s.calculaComissao() * 0.3)
+                .reduce(getValorVendido() * 0.15, Double::sum);
     }
 
     public void addSubordinado(Funcionario subordinado){
@@ -36,19 +34,14 @@ public class Consultor extends Funcionario{
     }
 
     public void promoveSubordinados(){
-        for (Funcionario subordinado : subordinados) {
-            subordinado.setResponsavel(this.getResponsavel());
-        }
+        subordinados.forEach(s -> s.setResponsavel(this.getResponsavel()));
     }
 
     public int numeroDeSubordinados(){
-        int resultado = subordinados.size();
-        for (Funcionario subordinado : subordinados) {
-            if(subordinado instanceof Consultor){
-                resultado += ((Consultor) subordinado).numeroDeSubordinados();
-            }
-        }
-        return resultado;
+        return subordinados.stream()
+                .filter(subordinado -> subordinado instanceof Consultor)
+                .map(subordinado -> (((Consultor) subordinado)).numeroDeSubordinados())
+                .reduce(subordinados.size(), Integer::sum);
     }
 
     @Override
@@ -56,10 +49,7 @@ public class Consultor extends Funcionario{
         final StringBuilder builder = new StringBuilder(super.toString());
         builder.append("Total de subordinados: ").append(numeroDeSubordinados()).append("\n");
         builder.append("Subordinados diretos: \n");
-
-        for (Funcionario subordinado : subordinados) {
-            builder.append("\t"). append(subordinado.getNome()).append("\n");
-        }
+        subordinados.forEach(subordinado -> builder.append("\t").append(subordinado.getNome()).append("\n"));
         return builder.toString();
     }
 }

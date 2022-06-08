@@ -8,8 +8,8 @@ public class DeclaracaoSimplificada extends Declaracao{
 
     @Override
     public double getValorImposto() {
-        if(getGanhoTributavel() <= ganhoIsento) return 0.0;
-        return (getGanhoTributavel() - ganhoIsento) * 0.2;
+        if(getGanhoTributavel() <= GANHO_ISENTO) return 0.0;
+        return (getGanhoTributavel() - GANHO_ISENTO) * 0.2;
     }
 
     @Override
