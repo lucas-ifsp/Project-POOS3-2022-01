@@ -15,17 +15,84 @@ public class SqliteFuncionarioDao implements FuncionarioDao {
 
     @Override
     public void salvar(Funcionario funcionario) {
-        throw new UnsupportedOperationException("Método ainda não implementado");
+        String sql = """
+                INSERT INTO funcionario(
+                    cpf,
+                    nome,
+                    idade,
+                    sexo,
+                    valor_vendido,
+                    responsavel,
+                    tipo
+                ) VALUES (?, ?, ?, ?, ?, ?, ?) 
+               
+                """;
+        try {
+            final PreparedStatement stmt = ConnectionFactory.createPreparedStatement(sql);
+            stmt.setString(1, funcionario.getCpf());
+            stmt.setString(2, funcionario.getNome());
+            stmt.setInt(3, funcionario.getIdade());
+            stmt.setString(4, funcionario.getSexo().toString());
+            stmt.setDouble(5, funcionario.getValorVendido());
+
+            if(funcionario.getResponsavel() == null) stmt.setNull(6, Types.NULL);
+            else stmt.setString(6, funcionario.getCpfResponsavel());
+
+            if(funcionario instanceof Revendedor) stmt.setString(7, "REVENDEDOR");
+            else stmt.setString(7, "CONSULTOR");
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void atualizar(Funcionario funcionario) {
-        throw new UnsupportedOperationException("Método ainda não implementado");
+        String sql = """
+                UPDATE funcionario SET
+                    nome = ?,
+                    idade = ?,
+                    sexo = ?,
+                    valor_vendido = ?,
+                    responsavel = ?,
+                    tipo = ? 
+                WHERE cpf = ?
+                """;
+        try {
+            final PreparedStatement stmt = ConnectionFactory.createPreparedStatement(sql);
+
+            stmt.setString(1, funcionario.getNome());
+            stmt.setInt(2, funcionario.getIdade());
+            stmt.setString(3, funcionario.getSexo().toString());
+            stmt.setDouble(4, funcionario.getValorVendido());
+
+            if(funcionario.getResponsavel() == null) stmt.setNull(5, Types.NULL);
+            else stmt.setString(5, funcionario.getCpfResponsavel());
+
+            if(funcionario instanceof Revendedor) stmt.setString(6, "REVENDEDOR");
+            else stmt.setString(6, "CONSULTOR");
+
+            stmt.setString(7, funcionario.getCpf());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deletar(String cpf) {
-        throw new UnsupportedOperationException("Método ainda não implementado");
+        String sql = """
+                DELETE FROM funcionario WHERE cpf = ?
+                """;
+        try {
+            final PreparedStatement stmt = ConnectionFactory.createPreparedStatement(sql);
+            stmt.setString(1, cpf);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
